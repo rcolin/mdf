@@ -10,16 +10,6 @@ public class MotPlusLong {
 	
     public static void main(String[] args) {
 
-        /*
-        String popo = "le petit chat, est mort";
-
-        String[]t =  popo.split("\\W+");
-
-        for (String s: t
-             ) {
-            System.out.println("->" +s);
-        }*/
-
         List<String> texts = new ArrayList<>();
 
         Map<String, A> mapResult = new ConcurrentHashMap<>();
