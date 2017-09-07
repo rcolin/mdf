@@ -19,6 +19,7 @@ public class MotPlusLong {
             String s = sc.nextLine();
             texts.add(s);
         }
+        
 
         //on parse ligne par ligne
         for (String text: texts) {
