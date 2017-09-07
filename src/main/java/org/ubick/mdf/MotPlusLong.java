@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Celine on 31/08/2017.
  */
 public class MotPlusLong {
-
+	
     public static void main(String[] args) {
 
         /*
@@ -22,7 +22,7 @@ public class MotPlusLong {
 
         List<String> texts = new ArrayList<>();
 
-        Map<String, Integer> mapResult = new ConcurrentHashMap<>();
+        Map<String, A> mapResult = new ConcurrentHashMap<>();
 
         Scanner sc = new Scanner(System.in);
         while(sc.hasNextLine()) {
@@ -30,21 +30,26 @@ public class MotPlusLong {
             texts.add(s);
         }
 
+        //on parse ligne par ligne
         for (String text: texts) {
            String[] worlds = text.split("\\W+");
-            for (String world: worlds) {
-
+           //on parse mot par mot 
+           for (String world: worlds) {
                 if (mapResult.containsKey(world)){
-                    mapResult.put(world, mapResult.get(world)+1);
+                		A a = mapResult.get(world);
+                		a.i = a.i+1; 
                 }else{
-                    mapResult.put(world, 1);
+                    A a = new A();
+                    a.m = world;
+                    a.i = 1;
+                		mapResult.put(world, a);
                 }
             }
         }
 
         List<Integer> tabInt = new ArrayList<>();
         for (String world: mapResult.keySet()) {
-            tabInt.add(mapResult.get(world));
+            //tabInt.add(mapResult.get(world));
         }
 
         Collections.sort(tabInt);
@@ -59,9 +64,9 @@ public class MotPlusLong {
 
 
         for (String world: mapResult.keySet()) {
-            if(max3 > mapResult.get(world)){
-                mapResult.remove(world);
-            }
+            //if(max3 > mapResult.get(world)){
+            //    mapResult.remove(world);
+            //}
         }
 
     }
@@ -88,16 +93,34 @@ public class MotPlusLong {
 
 
 }
+
+class A implements Comparable<A>{
+	
+	public String m;
+	
+	public Integer i;
+	
+	@Override
+	public int compareTo(A o) {
+		int result = this.m.compareTo(o.m);
+		if(result == 0) {
+			result = this.i.compareTo(o.i); 
+		}
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "A [m=" + m + ", i=" + i + "]";
+	}
+}
+
 /*
 
 Enoncé
 
-
-
 Le but de ce challenge est de trouver les mots qui sont le plus présents dans une série de textes.
 Cependant, on considère que les mots qui sont présents dans tous les textes (s'il y en a ) ne sont pas intéressants et on ne les prendra donc pas en compte.
-
-
 
 Chaque texte est constitué par une séquence de caractères ASCII terminée par le caractère fin de ligne n.
 Les sous-séquences de lettres correspondant à des lettres (minuscules ou majuscules) sont considérées comme les mots composant le texte.
@@ -106,18 +129,12 @@ Si le jeu de données contient n textes, chaque mot m est donc associé à un no
 On ne s'intéresse qu'aux mots pour lesquels n_m < n, et l'on veut connaître les 3 mots parmi ceux-ci pour lesquels n_m est maximal.
 En cas d'égalité de n_m entre plusieurs mots on les affichera en ordre alphabétique.
 
-
-
 Format des données
-
-
 
 Entrée
 
 Une série de textes séparées par des fins de ligne "/n". Les mots du texte ne comprennent pas de caractère accentué.
 On entend par mot une série consécutive de lettres minuscules ou majuscules.
-
-
 
 Sortie
 
