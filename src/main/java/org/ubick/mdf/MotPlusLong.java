@@ -44,18 +44,16 @@ public class MotPlusLong {
 				//on transforme en minucule
 				m = m.toLowerCase();
                 if(handler.contains(m)==false){
-                    handler.add(m);
-                    if(m.length() > 2) {
-                        //System.out.println("Input : " + m);
-                        if (mapResult.containsKey(m)) {
-                            Mot a = mapResult.get(m);
-                            a.i = a.i + 1;
-                        } else {
-                            Mot a = new Mot();
-                            a.m = m;
-                            a.i = 1;
-                            mapResult.put(m, a);
-                        }
+                    handler.add(m); 
+                    //System.out.println("Input : " + m);
+                    if (mapResult.containsKey(m)) {
+                        Mot a = mapResult.get(m);
+                        a.i = a.i + 1;
+                    } else {
+                        Mot a = new Mot();
+                        a.m = m;
+                        a.i = 1;
+                        mapResult.put(m, a);
                     }
                 }
 			}
@@ -131,12 +129,10 @@ class Mot implements Comparable<Mot> {
 	
 	@Override
 	public int compareTo(Mot o) {
-		int result = o.i.compareTo(this.i);
-		if (result == 0) {
-			//result = o.m.compareTo(this.m);
-			result = this.m.compareTo(o.m);
-		}
-		return result;
+		if(o.i == i){
+            return m.compareTo(o.m);
+        }else
+            return o.i-i;
 	}
 
 	@Override
