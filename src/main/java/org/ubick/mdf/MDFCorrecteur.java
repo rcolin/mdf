@@ -2,9 +2,6 @@ package org.ubick.mdf;
 
 import java.util.*;
 
-/**
- * Created by Celine on 22/08/2017.
- */
 public class MDFCorrecteur {
 
     private static Map<String, Integer> dico = new HashMap<>();

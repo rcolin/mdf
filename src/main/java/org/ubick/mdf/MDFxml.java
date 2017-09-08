@@ -6,9 +6,6 @@ import org.omg.PortableInterceptor.ServerRequestInfo;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by Celine on 22/08/2017.
- */
 public class MDFxml {
 
     public static void main(String[] args) {
