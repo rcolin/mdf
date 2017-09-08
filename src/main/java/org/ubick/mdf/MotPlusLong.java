@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MotPlusLong {
+public class MotPlusLong { 
 
 	public static void main(String[] args) {
 		
@@ -34,7 +34,7 @@ public class MotPlusLong {
 			String text = sc.nextLine();
 			//on split par mot
 			String[] mots = text.split("\\W+");
-            
+             
             //on vérifie si le mot n'a pas deja été utilisé dans la phrase
             Set<String> handler = new HashSet<String>();
 
