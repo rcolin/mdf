@@ -1,19 +1,31 @@
 package org.ubick.mdf;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MotPlusLong {
 
 	public static void main(String[] args) {
-
-		System.out.println("hello");
 		
 		Map<String, Mot> mapResult = new ConcurrentHashMap<>();
+		Map<String, Integer> mapCheckMotText = new ConcurrentHashMap<>();
 		int nbLignes = 0;
 
+		Scanner sc = null;
+	    if (args!=null && args.length>0 && args[0].equals("-d")){
+	    		try {
+					sc = new Scanner(new File(args[1]));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+	    } else {
+	    		sc = new Scanner(System.in);
+	    }
+		
 		// on parse ligne par ligne
-		Scanner sc = new Scanner(System.in);
+		//Scanner sc = new Scanner(System.in);
 		while (sc.hasNextLine()) {
 			//on compte les lignes
 			nbLignes++;
@@ -26,15 +38,17 @@ public class MotPlusLong {
 				
 				//on transforme en minucule
 				m = m.toLowerCase();
-				
-				if (mapResult.containsKey(m)) {
-					Mot a = mapResult.get(m);
-					a.i = a.i + 1;
-				} else {
-					Mot a = new Mot();
-					a.m = m;
-					a.i = 1;
-					mapResult.put(m, a);
+				if(m.length() > 2) {
+					//System.out.println("Input : " + m);
+					if (mapResult.containsKey(m)) {
+						Mot a = mapResult.get(m);
+						a.i = a.i + 1;
+					} else {
+						Mot a = new Mot();
+						a.m = m;
+						a.i = 1;
+						mapResult.put(m, a);
+					}
 				}
 			}
 		}
@@ -42,9 +56,15 @@ public class MotPlusLong {
 
 		//on transforme on map en list
 		List<Mot> listA = new ArrayList<Mot>(mapResult.values());
-		//on true la list des A
-		Collections.sort(listA);
 
+		//on trie la liste A
+		Collections.sort(listA);
+		
+		/**
+		for (Mot mot : listA) {
+			System.out.println("==> " + mot);
+		}*/
+		
 		//On supprime les mot avec une occurence sup au nombre de lignes 
 		List<Mot> listB = new ArrayList<Mot>();
 		for (int j = 0; j < listA.size(); j++) {
@@ -53,6 +73,11 @@ public class MotPlusLong {
 		}
 		listA = null;
 		
+		/**
+		for (Mot mot : listB) {
+			System.out.println("=> " + mot);
+		}*/
+				
 		for (int j = 0; j < 3; j++) {
 			System.out.println(listB.get(j));
 		}
@@ -65,6 +90,37 @@ class Mot implements Comparable<Mot> {
 
 	public Integer i;
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((i == null) ? 0 : i.hashCode());
+		result = prime * result + ((m == null) ? 0 : m.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Mot other = (Mot) obj;
+		if (i == null) {
+			if (other.i != null)
+				return false;
+		} else if (!i.equals(other.i))
+			return false;
+		if (m == null) {
+			if (other.m != null)
+				return false;
+		} else if (!m.equals(other.m))
+			return false;
+		return true;
+	}
+	
 	@Override
 	public int compareTo(Mot o) {
 		int result = o.i.compareTo(this.i);
