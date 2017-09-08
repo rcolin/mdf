@@ -10,8 +10,9 @@ public class MotPlusLong {
 	public static void main(String[] args) {
 		
 		Map<String, Mot> mapResult = new ConcurrentHashMap<>();
-		Map<String, Integer> mapCheckMotText = new ConcurrentHashMap<>();
-		int nbLignes = 0;
+		
+		
+        int nbLignes = 0;
 
 		Scanner sc = null;
 	    if (args!=null && args.length>0 && args[0].equals("-d")){
@@ -33,23 +34,30 @@ public class MotPlusLong {
 			String text = sc.nextLine();
 			//on split par mot
 			String[] mots = text.split("\\W+");
-			// on parse mot par mot
+            
+            //on vérifie si le mot n'a pas deja été utilisé dans la phrase
+            Set<String> handler = new HashSet<String>();
+
+        	// on parse mot par mot
 			for (String m : mots) {
 				
 				//on transforme en minucule
 				m = m.toLowerCase();
-				if(m.length() > 2) {
-					//System.out.println("Input : " + m);
-					if (mapResult.containsKey(m)) {
-						Mot a = mapResult.get(m);
-						a.i = a.i + 1;
-					} else {
-						Mot a = new Mot();
-						a.m = m;
-						a.i = 1;
-						mapResult.put(m, a);
-					}
-				}
+                if(handler.contains(m)==false){
+                    handler.add(m);
+                    if(m.length() > 2) {
+                        //System.out.println("Input : " + m);
+                        if (mapResult.containsKey(m)) {
+                            Mot a = mapResult.get(m);
+                            a.i = a.i + 1;
+                        } else {
+                            Mot a = new Mot();
+                            a.m = m;
+                            a.i = 1;
+                            mapResult.put(m, a);
+                        }
+                    }
+                }
 			}
 		}
 		sc.close();
