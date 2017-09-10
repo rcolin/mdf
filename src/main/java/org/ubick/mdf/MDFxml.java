@@ -63,6 +63,8 @@ public class MDFxml {
         System.out.print(list.get(0));
         //System.out.print(arr.get(list.get(0)));
 
+        sc.close();
+        
     }
 
 }

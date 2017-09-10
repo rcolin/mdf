@@ -11,11 +11,9 @@ public class MDFCorrecteur {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        String s = sc.nextLine();
 
         //nombre de mot du dico
         int d = sc.nextInt();
-
 
         for(int i = 0; i < d ; i++){
             String m = sc.nextLine();
@@ -29,6 +27,8 @@ public class MDFCorrecteur {
             motsSaisis.add(sc.nextLine());
         }
 
+        
+        sc.close();
 
         ///on parse chaque mot
         for (String mot : motsSaisis) {
@@ -69,9 +69,6 @@ public class MDFCorrecteur {
 
                 }
             }//fin de swap
-
-
-
         }
     }
 
