@@ -1,8 +1,5 @@
 package org.ubick.mdf;
 
-import com.sun.glass.ui.SystemClipboard;
-import org.omg.PortableInterceptor.ServerRequestInfo;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
