@@ -6,92 +6,106 @@ import java.util.*;
 
 public class Friandise {
 
-	public static void main( String[] argv ) throws Exception {
-		
+	public static void main(String[] argv) throws Exception {
+
 		Scanner sc = null;
-	    if (argv!=null && argv.length>0 && argv[0].equals("-d")){
-	    		try {
-					sc = new Scanner(new File(argv[1]));
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-	    } else {
-	    		sc = new Scanner(System.in);
-	    }
-	    
-	    //parsing
-	    
-	    int m = Integer.parseInt(sc.nextLine());
-	    int t = Integer.parseInt(sc.nextLine());
-	    
-	    List<Piece> monnaies = new ArrayList<>();
-	   
-	    
-	    for (int i = 0; i < t; i++) {
-	    		monnaies.add(new Piece(sc.nextInt(), sc.nextInt()));
-		}
-	    
-	    //System.out.println(monnaies);
-	    Collections.sort(monnaies);
-	    //System.out.println(monnaies);
-	    
-	    sc.close();
-	    
-	    int result = 0;
-	    
-	    int first = m;
-	    
-	    for (Piece piece : monnaies) {
-			
-	    		for (int i = piece.n; i > 0; i--) {
-	    			System.out.println("i = " + i); 
-	    			if(first - (i*piece.v) == 0) {
-	    				System.out.println(i);
-	    				System.exit(0);
-	    			}
-	    			if(m - (i*piece.v) >= 0 ){
-					System.out.println("i = " + i + " v=" + piece.v);
-					m=m-(i*piece.v);
-					System.out.println("m = " + m);
-					result += i;
-					break;
-				}
+		if (argv != null && argv.length > 0 && argv[0].equals("-d")) {
+			try {
+				sc = new Scanner(new File(argv[1]));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
-	    	
+		} else {
+			sc = new Scanner(System.in);
 		}
-	    
-	    System.out.println(m);
-	    if(m == 0 )
-	    		System.out.println(result);
-	    else
-	    		System.out.println("IMPOSSIBLE");
-	}
 
-}
+		// parsing
 
-class Piece implements Comparable<Piece>{
-	int n;
-	
-	int v;
+		int m = Integer.parseInt(sc.nextLine());
+		int t = Integer.parseInt(sc.nextLine());
 
-	public Piece(int n, int v) {
-		this.n = n;
-		this.v = v;
-	}
+		List<Integer> monnaies = new ArrayList<>();
 
-	@Override
-	public int compareTo(Piece o) {
-		int result = o.v-v;
+		for (int i = 0; i < t; i++) {
+			
+			int n = sc.nextInt();
+			int v = sc.nextInt();
+			for(int j = 0; j < n; j++) {
+				monnaies.add(v);	
+			}
+		}
+
+		sc.close();
+		
+		
+		boolean estCalculable = false;
+		//test 
+		for (Integer mon : monnaies) {
+			if(m > mon) {
+				estCalculable = true;
+			}
+		}
+		
+		if(!estCalculable) {
+			System.out.println("IMPOSSIBLE");
+			System.exit(0);
+		}
+		
+		List<List<Integer>> combiList = new ArrayList<>();
+		
+		Integer result = 0;
+		List<Integer> results = new ArrayList<>();
+		
+		//appel de l'algo
+		combiAlgo(monnaies, 1000, 0, new ArrayList(), 0, results, m);
+		
+		
+		if(results.size()>0) {
+			Collections.sort(results);
+			result = results.get(0);	
+		}
+		
 		if(result == 0)
-			result = o.n-n;
-		return result;
+			System.out.println("IMPOSSIBLE");
+		else
+			System.out.println(result);
 	}
-	
-	@Override
-	public String toString() {
-		return "Piece [n=" + n + ", v=" + v + "]";
+
+	public static void combiAlgo(List<Integer> ensemble, int profMax,
+	         int profCourante, List<Integer> prefix, int rang, List<Integer> results, Integer m)
+	   {
+	      if (profCourante < profMax)
+	      {
+	         for (int i = rang; i < ensemble.size(); i++)
+	         {
+	        	 	List<Integer> tmp = new ArrayList<>(prefix);
+	        	 	tmp.add(ensemble.get(i));
+	        	 	//System.out.println(tmp);
+	        	 	if(testPrice(m, tmp)) {
+	        			if(!results.contains(tmp.size())){
+	        				results.add(tmp.size());
+	        				System.out.println("interm result : " + results);
+	        			}
+	        	 	}
+	         }
+	         
+	         for (int i = rang; i < ensemble.size(); i++)
+	         {
+	        	 	List<Integer> newPrefix = new ArrayList<>(prefix);
+	        	 	newPrefix.add(ensemble.get(i));
+	        	 	combiAlgo(ensemble, profMax, profCourante + 1, newPrefix, i + 1, results, m );
+	         }
+	      }
+	   }//fin algo
+///fin main	
+
+	private static boolean testPrice(Integer m, List<Integer> list) {
+		int prix = m;
+		for (Integer i: list) {
+			prix -=i;
+		}
+		if(prix == 0)
+			return true;
+		return false;
 	}
-	
-	
-	
 }
