@@ -24,88 +24,75 @@ public class Friandise {
 		int m = Integer.parseInt(sc.nextLine());
 		int t = Integer.parseInt(sc.nextLine());
 
-		List<Integer> monnaies = new ArrayList<>();
+		List<Piece> monnaies = new ArrayList<>();
 
 		for (int i = 0; i < t; i++) {
-			
+
 			int n = sc.nextInt();
 			int v = sc.nextInt();
-			for(int j = 0; j < n; j++) {
-				monnaies.add(v);	
-			}
+			monnaies.add(new Piece(v, n));
 		}
 
 		sc.close();
-		
-		
-		boolean estCalculable = false;
-		//test 
-		for (Integer mon : monnaies) {
-			if(m > mon) {
-				estCalculable = true;
-			}
-		}
-		
-		if(!estCalculable) {
-			System.out.println("IMPOSSIBLE");
-			System.exit(0);
-		}
-		
-		List<List<Integer>> combiList = new ArrayList<>();
-		
-		Integer result = 0;
-		List<Integer> results = new ArrayList<>();
-		
-		//appel de l'algo
-		combiAlgo(monnaies, 1000, 0, new ArrayList(), 0, results, m);
-		
-		
-		if(results.size()>0) {
-			Collections.sort(results);
-			result = results.get(0);	
-		}
-		
-		if(result == 0)
+
+		int result = Integer.MAX_VALUE;
+
+		result = combiAlgo(monnaies, m, 0);
+
+		if (result == Integer.MAX_VALUE)
 			System.out.println("IMPOSSIBLE");
 		else
 			System.out.println(result);
 	}
 
-	public static void combiAlgo(List<Integer> ensemble, int profMax,
-	         int profCourante, List<Integer> prefix, int rang, List<Integer> results, Integer m)
-	   {
-	      if (profCourante < profMax)
-	      {
-	         for (int i = rang; i < ensemble.size(); i++)
-	         {
-	        	 	List<Integer> tmp = new ArrayList<>(prefix);
-	        	 	tmp.add(ensemble.get(i));
-	        	 	//System.out.println(tmp);
-	        	 	if(testPrice(m, tmp)) {
-	        			if(!results.contains(tmp.size())){
-	        				results.add(tmp.size());
-	        				System.out.println("interm result : " + results);
-	        			}
-	        	 	}
-	         }
-	         
-	         for (int i = rang; i < ensemble.size(); i++)
-	         {
-	        	 	List<Integer> newPrefix = new ArrayList<>(prefix);
-	        	 	newPrefix.add(ensemble.get(i));
-	        	 	combiAlgo(ensemble, profMax, profCourante + 1, newPrefix, i + 1, results, m );
-	         }
-	      }
-	   }//fin algo
-///fin main	
+	public static Integer combiAlgo(List<Piece> ensemble, Integer sum, int nbPieces) {
 
-	private static boolean testPrice(Integer m, List<Integer> list) {
-		int prix = m;
-		for (Integer i: list) {
-			prix -=i;
+		// cas d'arrêt de la récursivité
+		if (ensemble.isEmpty()) {
+			if (sum == 0) {
+				return nbPieces;
+			} else {
+				return Integer.MAX_VALUE;
+			}
 		}
-		if(prix == 0)
-			return true;
-		return false;
+
+		// on crée une sctructure pour les sous résultats
+		List<Integer> subResults = new ArrayList<>();
+
+		// on selectionne la piece courrante
+		Piece piece = ensemble.get(0);
+
+		// on détermine le min des pieces à calculer
+		int r = sum / piece.v;
+		int nbPieceMin = Math.min(piece.n, r);
+
+		// i = 0 permet de prendre en compte le cas ou on ne veut pas de piece.
+		for (int i = 0; i <= nbPieceMin; i++) {
+			int newSum = sum - (i * piece.v);
+			int newNbPieces = nbPieces + i;
+			subResults.add(combiAlgo(ensemble.subList(1, ensemble.size()), newSum, newNbPieces));
+		}
+
+		Collections.sort(subResults);
+		return subResults.get(0);
+	}
+
+}
+
+class Piece {
+
+	int v;
+
+	int n;
+
+	public Piece(int v, int n) {
+		super();
+		this.v = v;
+		this.n = n;
+	}
+
+	@Override
+	public String toString() {
+		return "Piece[v=" + v + ", n=" + n + "]";
 	}
 }

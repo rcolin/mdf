@@ -1,6 +1,6 @@
 package org.ubick.mdf;
 
-public class TestComb {
+public class TemplateAlgoCombinatoire {
 
 	   public static void main(String[] args)
 	   {
