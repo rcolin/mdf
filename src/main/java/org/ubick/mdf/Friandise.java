@@ -47,6 +47,7 @@ public class Friandise {
 
 	public static Integer combiAlgo(List<Piece> ensemble, Integer sum, int nbPieces) {
 
+		System.out.println(ensemble);
 		// cas d'arrêt de la récursivité
 		if (ensemble.isEmpty()) {
 			if (sum == 0) {
@@ -61,6 +62,8 @@ public class Friandise {
 
 		// on selectionne la piece courrante
 		Piece piece = ensemble.get(0);
+		
+		System.out.println(piece);
 
 		// on détermine le min des pieces à calculer
 		int r = sum / piece.v;
