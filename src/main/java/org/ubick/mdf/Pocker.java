@@ -27,8 +27,6 @@ public class Pocker {
 			int x = sc.nextInt();
 			int y = sc.nextInt();
 			sum += (-x+y);
-			if(sum < 0)
-				sum = 0;
 		}
 		System.out.println(sum);
 	}
