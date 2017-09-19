@@ -31,7 +31,7 @@ public class TrivialPoursuite {
 			if (position > 6) {
 				position = position % 6;
 			}
-		} while (sc.hasNext());
+		} while (sc.hasNextInt());
 
 		System.out.println(colors[position - 1]);
 

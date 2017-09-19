@@ -10,7 +10,7 @@ package com.isograd.exercise;
 import java.io.*;
 import java.util.*;
 
-public class IsoContest {
+public class IsoContest3 {
 	public static void main(String[] argv) throws Exception {
 
 		Scanner sc = null;
@@ -24,8 +24,5 @@ public class IsoContest {
 			sc = new Scanner(System.in);
 		}
 		// code...
-		
-		IsoContestBase.localEcho("Good luck!");
-		
 	}
 }
